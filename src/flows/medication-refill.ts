@@ -1,0 +1,107 @@
+import { Flow } from '@/types/flow';
+
+export const medicationRefillFlow: Flow = {
+  id: 'medication-refill',
+  name: 'Medication Refill',
+  description: 'Get a refill of your existing prescription',
+  icon: 'Pill',
+  steps: [
+    {
+      id: 'medication',
+      question: "What medication do you need refilled?",
+      inputType: 'text',
+      required: true,
+      placeholder: 'Medication name',
+    },
+    {
+      id: 'dosage',
+      question: "What's the dosage and quantity?",
+      inputType: 'text',
+      required: true,
+      placeholder: 'e.g., 10mg, 30 tablets',
+    },
+    {
+      id: 'phone',
+      question: "What's your phone number?",
+      inputType: 'phone',
+      required: true,
+      placeholder: '(555) 123-4567',
+    },
+    {
+      id: 'full-name',
+      question: "What's your full name?",
+      inputType: 'text',
+      required: true,
+      placeholder: 'Full name',
+    },
+    {
+      id: 'dob',
+      question: "What's your date of birth?",
+      inputType: 'date',
+      required: true,
+    },
+    {
+      id: 'prescriber',
+      question: "Who prescribed this medication?",
+      inputType: 'text',
+      required: true,
+      placeholder: "Doctor or provider's name",
+    },
+    {
+      id: 'prescriber-contact',
+      question: "Do you have the prescriber's phone number or address?",
+      inputType: 'text',
+      required: false,
+      placeholder: 'Phone number or address (optional)',
+    },
+    {
+      id: 'refills-remaining',
+      question: "How many refills do you have remaining?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: '1+', label: '1 or more' },
+        { value: '0', label: 'None (need renewal)' },
+        { value: 'unknown', label: "I don't know" },
+      ],
+    },
+    {
+      id: 'urgency',
+      question: "When will you run out of your current supply?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'already-out', label: 'Already out' },
+        { value: '1-3-days', label: '1-3 days' },
+        { value: '4-7-days', label: '4-7 days' },
+        { value: '1-2-weeks', label: '1-2 weeks' },
+        { value: 'not-urgent', label: 'Not urgent' },
+      ],
+    },
+    {
+      id: 'controlled',
+      question: "Is this a controlled substance?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' },
+        { value: 'not-sure', label: 'Not sure' },
+      ],
+    },
+    {
+      id: 'pharmacy',
+      question: "Which pharmacy should we send it to?",
+      inputType: 'pharmacy-search',
+      required: true,
+      placeholder: 'Search for pharmacy or enter name/address',
+    },
+    {
+      id: 'other-notes',
+      question: "Anything else we should know?",
+      inputType: 'text',
+      required: false,
+      placeholder: 'Additional notes...',
+    },
+  ],
+};

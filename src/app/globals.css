@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
 :root {
+  /* Core colors from design system */
+  --coral: #F9A7A7;
+  --cyan: #A8F4F4;
+  --mint: #B0F7A9;
+  --navy: #132F4E;
+  --navy-dark: #001122;
+  --cyan-light: #EFFDFD;
+  --mint-light: #E2FFDF;
+
+  /* Semantic mappings */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #132F4E;
+  --primary: #A8F4F4;
+  --primary-dark: #8CE8E8;
+  --primary-light: #EFFDFD;
+  --secondary: #64748b;
+  --accent: #F9A7A7;
+  --accent-light: #FDE8E8;
+  --success: #B0F7A9;
+  --success-light: #E2FFDF;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --muted: #64748b;
+  --text-dark: #001122;
+  --gradient-start: #E2FFDF;
+  --gradient-end: #EFFDFD;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-card-bg: var(--card-bg);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #001122;
+    --foreground: #f1f5f9;
+    --primary: #A8F4F4;
+    --primary-dark: #8CE8E8;
+    --primary-light: #132F4E;
+    --secondary: #94a3b8;
+    --accent: #F9A7A7;
+    --accent-light: #3d2a2a;
+    --success: #B0F7A9;
+    --success-light: #1a3d1a;
+    --card-bg: #132F4E;
+    --border: #2a4a6a;
+    --muted: #94a3b8;
+    --text-dark: #ffffff;
+    --gradient-start: #1a3d2a;
+    --gradient-end: #132F4E;
   }
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Chat bubble animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Typing indicator */
+@keyframes bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+.typing-dot {
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Gradient card background */
+.gradient-card {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+}
+
+/* Hide scrollbar for horizontal scroll */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
