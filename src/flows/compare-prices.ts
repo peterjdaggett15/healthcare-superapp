@@ -7,6 +7,26 @@ export const comparePricesFlow: Flow = {
   icon: 'DollarSign',
   steps: [
     {
+      id: 'phone',
+      question: "Hi! I'll help you find the best prices. What's your phone number so we can send you results?",
+      inputType: 'phone',
+      required: true,
+      placeholder: '(555) 123-4567',
+    },
+    {
+      id: 'full-name',
+      question: "What's your full name?",
+      inputType: 'text',
+      required: true,
+      placeholder: 'Full name',
+    },
+    {
+      id: 'dob',
+      question: "What's your date of birth?",
+      inputType: 'date',
+      required: true,
+    },
+    {
       id: 'price-type',
       question: "What would you like to compare prices for?",
       inputType: 'single-select',
@@ -74,6 +94,24 @@ export const comparePricesFlow: Flow = {
         { value: 'not-filling', label: "I don't fill this yet" },
       ],
       conditionalOn: { stepId: 'price-type', value: 'prescription' },
+    },
+    {
+      id: 'rx-compare-with-insurance',
+      question: "Would you like us to compare your insurance price vs. cash/discount prices?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'yes', label: 'Yes, compare both' },
+        { value: 'cash-only', label: 'No, just show me cash/discount prices' },
+      ],
+      conditionalOn: { stepId: 'rx-current-payment', value: 'insurance' },
+    },
+    {
+      id: 'rx-insurance-card',
+      question: "Please upload your insurance card so we can check your copay.",
+      inputType: 'photo-upload',
+      required: true,
+      conditionalOn: { stepId: 'rx-compare-with-insurance', value: 'yes' },
     },
     {
       id: 'rx-current-price',
@@ -219,6 +257,25 @@ export const comparePricesFlow: Flow = {
         { value: 'can-get', label: 'I can get one' },
       ],
       conditionalOn: { stepId: 'price-type', value: 'test' },
+    },
+    {
+      id: 'test-payment',
+      question: "How do you want to pay for this test?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'insurance', label: 'Use my insurance' },
+        { value: 'cash', label: 'Cash price' },
+        { value: 'both', label: 'Compare both' },
+      ],
+      conditionalOn: { stepId: 'price-type', value: 'test' },
+    },
+    {
+      id: 'test-insurance-card',
+      question: "Please upload your insurance card.",
+      inputType: 'photo-upload',
+      required: true,
+      conditionalOn: { stepId: 'test-payment', value: ['insurance', 'both'] },
     },
     {
       id: 'test-results-destination',

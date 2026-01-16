@@ -32,6 +32,12 @@ export const appointmentsFlow: Flow = {
       conditionalOn: { stepId: 'for-who', value: 'someone-else' },
     },
     {
+      id: 'dob',
+      question: "What's the patient's date of birth?",
+      inputType: 'date',
+      required: true,
+    },
+    {
       id: 'action',
       question: "What would you like to do?",
       inputType: 'single-select',
@@ -69,6 +75,24 @@ export const appointmentsFlow: Flow = {
         { value: 'existing', label: 'Existing patient' },
       ],
       conditionalOn: { stepId: 'action', value: 'schedule' },
+    },
+    {
+      id: 'has-insurance',
+      question: "Will you be using insurance for this visit?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No, self-pay' },
+      ],
+      conditionalOn: { stepId: 'action', value: 'schedule' },
+    },
+    {
+      id: 'insurance-card',
+      question: "Please upload a photo of your insurance card (front and back).",
+      inputType: 'photo-upload',
+      required: true,
+      conditionalOn: { stepId: 'has-insurance', value: 'yes' },
     },
     {
       id: 'visit-reason',
@@ -172,7 +196,7 @@ export const appointmentsFlow: Flow = {
       conditionalOn: { stepId: 'action', value: 'cancel' },
       skipIf: { stepId: 'want-to-reschedule', value: 'yes' },
     },
-    // Reschedule flow (also triggered from cancel)
+    // Reschedule flow (direct reschedule only - cancel->reschedule uses cancel fields above)
     {
       id: 'reschedule-provider-name',
       question: "Which provider is your appointment with?",
@@ -197,6 +221,7 @@ export const appointmentsFlow: Flow = {
       placeholder: "Date and time, or 'I don't remember'",
       conditionalOn: { stepId: 'action', value: 'reschedule' },
     },
+    // These reschedule questions appear for both direct reschedule AND cancel->reschedule
     {
       id: 'reschedule-urgency',
       question: "How soon do you want to be seen?",
@@ -209,7 +234,21 @@ export const appointmentsFlow: Flow = {
         { value: 'month', label: 'Within a month' },
         { value: 'flexible', label: 'Flexible' },
       ],
-      conditionalOn: { stepId: 'action', value: ['reschedule'] },
+      conditionalOn: { stepId: 'want-to-reschedule', value: 'yes' },
+    },
+    {
+      id: 'reschedule-urgency-direct',
+      question: "How soon do you want to be seen?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'asap', label: 'ASAP' },
+        { value: 'this-week', label: 'This week' },
+        { value: 'two-weeks', label: 'Within 2 weeks' },
+        { value: 'month', label: 'Within a month' },
+        { value: 'flexible', label: 'Flexible' },
+      ],
+      conditionalOn: { stepId: 'action', value: 'reschedule' },
     },
     {
       id: 'reschedule-preferred-times',
@@ -217,7 +256,15 @@ export const appointmentsFlow: Flow = {
       inputType: 'text',
       required: true,
       placeholder: 'e.g., Weekday mornings, Tuesday afternoons...',
-      conditionalOn: { stepId: 'action', value: ['reschedule'] },
+      conditionalOn: { stepId: 'want-to-reschedule', value: 'yes' },
+    },
+    {
+      id: 'reschedule-preferred-times-direct',
+      question: "What days and times work best for you?",
+      inputType: 'text',
+      required: true,
+      placeholder: 'e.g., Weekday mornings, Tuesday afternoons...',
+      conditionalOn: { stepId: 'action', value: 'reschedule' },
     },
     {
       id: 'reschedule-booking-preference',
@@ -228,7 +275,18 @@ export const appointmentsFlow: Flow = {
         { value: 'options', label: 'Give me options' },
         { value: 'book-it', label: 'Just book it' },
       ],
-      conditionalOn: { stepId: 'action', value: ['reschedule'] },
+      conditionalOn: { stepId: 'want-to-reschedule', value: 'yes' },
+    },
+    {
+      id: 'reschedule-booking-preference-direct',
+      question: "Do you want us to give you options or just book the best available time?",
+      inputType: 'single-select',
+      required: true,
+      options: [
+        { value: 'options', label: 'Give me options' },
+        { value: 'book-it', label: 'Just book it' },
+      ],
+      conditionalOn: { stepId: 'action', value: 'reschedule' },
     },
     {
       id: 'reschedule-notes',
@@ -236,7 +294,15 @@ export const appointmentsFlow: Flow = {
       inputType: 'text',
       required: false,
       placeholder: 'Any notes...',
-      conditionalOn: { stepId: 'action', value: ['reschedule'] },
+      conditionalOn: { stepId: 'want-to-reschedule', value: 'yes' },
+    },
+    {
+      id: 'reschedule-notes-direct',
+      question: "Anything else we should know?",
+      inputType: 'text',
+      required: false,
+      placeholder: 'Any notes...',
+      conditionalOn: { stepId: 'action', value: 'reschedule' },
     },
   ],
 };
